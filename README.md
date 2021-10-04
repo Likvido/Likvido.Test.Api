@@ -31,12 +31,44 @@ public class MyTestFixture : ConfigurableTestFixture<Startup, MyDesignDbContext,
     {
     }
 
-    public HttpClient Client => HttpClientFactory.HttpClient;
     // Get configured clients by name:
-    public override HttpClient AuthClient => HttpClientFactory.GetNamedHttpClient("Auth");
+    public HttpClient AuthClient => HttpClientFactory.GetNamedHttpClient("Auth");
 
     // Add mocks to overwrite services.
     public Mock<IMyService> MyService { get; } = new();
+}
+```
+
+Add db context fixture and configuration.
+```c#
+public class MySqliteContextFixture : SqliteContextFixture<PayablesContext, ApplicationDbContext>
+{
+    private ITestDataHelper? _testDataHelper;
+
+    protected override ITestDataHelper GetTestDataHelper() =>
+        _testDataHelper ??= new MyDbSqliteTestDataHelper(() => DesignContext, Quote);
+}
+
+public class MyDbSqliteTestDataHelper : BaseTestDataHelper<MyDesignContext>
+{
+    public MyDbSqliteTestDataHelper(
+        Func<MyDesignContext> context,
+        Func<string, string> quote) : base(context, quote)
+    {
+    }
+
+    public override async Task GenerateTestDataAsync()
+    {
+        // Add test data to Context.
+    }
+
+    public override string[] GetCleanupTables()
+    {
+        return new[]
+        {
+            // Names of tables to cleanup after test execution.
+        };
+    }
 }
 ```
 
@@ -75,4 +107,4 @@ public class MyControllerTests : TestsBase<MyTestFixture>
 
 ## Note
 
-[More on integration tests.](https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-5.0)
+[More on integration tests in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-5.0)
