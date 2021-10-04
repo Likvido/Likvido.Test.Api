@@ -1,11 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-  
   <Import Project="$(ProjectDir)../version.props" />
+  <Import Project="$(ProjectDir)../shared.props" />
   
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.10" />

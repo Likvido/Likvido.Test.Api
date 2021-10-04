@@ -10,17 +10,17 @@ namespace Likvido.Test.Api
     {
         private IDictionary<string, string[]>? _beforeCleanupCommands;
         private IDictionary<string, string[]>? _specialCleanupCommands;
-        protected bool _testDataCreated;
-        protected readonly Func<TContext> _context;
-        protected readonly Func<string, string> _q;
+        protected bool TestDataCreated { get; private set; }
+        protected Func<TContext> GetContext { get; }
+        protected Func<string, string> Quote { get; }
 
         public BaseTestDataHelper(Func<TContext> context, Func<string, string> quote)
         {
-            _context = context;
-            _q = quote;
+            GetContext = context;
+            Quote = quote;
         }
 
-        protected TContext Context => _context();
+        protected TContext Context => GetContext();
 
         public virtual void Cleanup()
         {
@@ -37,7 +37,7 @@ namespace Likvido.Test.Api
                     }
                 }
 
-                if (_testDataCreated && specialCleanupCommands.ContainsKey(tableName))
+                if (TestDataCreated && specialCleanupCommands.ContainsKey(tableName))
                 {
                     foreach (var command in specialCleanupCommands[tableName])
                     {
@@ -46,7 +46,7 @@ namespace Likvido.Test.Api
                 }
                 else
                 {
-                    Context.Database.ExecuteSqlRaw($@"DELETE FROM {_q(tableName)}");
+                    Context.Database.ExecuteSqlRaw($@"DELETE FROM {Quote(tableName)}");
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace Likvido.Test.Api
 
         public void CreateTestData()
         {
-            if (_testDataCreated)
+            if (TestDataCreated)
             {
                 return;
             }
@@ -67,7 +67,7 @@ namespace Likvido.Test.Api
 
             GenerateTestDataAsync().Wait();
 
-            _testDataCreated = true;
+            TestDataCreated = true;
         }
 
         public virtual Task GenerateTestDataAsync()

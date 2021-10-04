@@ -6,7 +6,8 @@ namespace Likvido.Test.Api
         where TFixture : TestFixtureBase
     {
         protected bool IsPersistentFixture { get; set; }
-        protected TFixture? _fixture { get; set; }
+        private TFixture? _fixture;
+
         public TFixture Fixture
         {
             get

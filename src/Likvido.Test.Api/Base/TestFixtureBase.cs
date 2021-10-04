@@ -24,7 +24,7 @@ namespace Likvido.Test.Api
 
 
         #region IDisposable Support
-        private bool disposedValue; // To detect redundant calls
+        private bool _disposedValue; // To detect redundant calls
 
         protected virtual void OnDisposing()
         {
@@ -32,14 +32,14 @@ namespace Likvido.Test.Api
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
                     OnDisposing();
                 }
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

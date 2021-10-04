@@ -16,14 +16,14 @@ namespace Likvido.Test.Api
     public class HttpClientFactory<TStartup> : IDisposable
         where TStartup : class
     {
-        private readonly HttpClientFactoryBuilderOptions _options;
+        private readonly HttpClientFactoryOptions _options;
         private readonly WebApplicationFactory<TStartup> _factory;
         private readonly Dictionary<string, HttpClient> _namedHttpClients = new();
-        
+
         private IConfiguration? _configuration;
         private HttpClient? _httpClient;
-        
-        internal HttpClientFactory(HttpClientFactoryBuilderOptions options)
+
+        public HttpClientFactory(HttpClientFactoryOptions options)
         {
             _options = options;
             _factory = CreateWebAppFactory();
@@ -59,7 +59,9 @@ namespace Likvido.Test.Api
             var projectDir = Directory.GetCurrentDirectory();
             var configPath = Path.Combine(projectDir, "appsettings.json");
 
+#pragma warning disable CA2000 // Dispose objects before losing scope
             return new WebApplicationFactory<TStartup>()
+#pragma warning restore CA2000 // Dispose objects before losing scope
                 .WithWebHostBuilder(builder =>
                 {
                     builder.ConfigureAppConfiguration((context, conf) =>

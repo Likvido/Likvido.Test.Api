@@ -5,12 +5,14 @@ VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9445A89C-4010-466A-97C7-920B2AED7DD6}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		..\.github\workflows\nuget.yml = ..\.github\workflows\nuget.yml
 		..\README.md = ..\README.md
+		shared.props = shared.props
 		version.props = version.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Likvido.Test.Api", "Likvido.Test.Api\Likvido.Test.Api.csproj", "{579EF172-AD10-4C66-B7F8-8832B0AA2596}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Likvido.Test.Api", "Likvido.Test.Api\Likvido.Test.Api.csproj", "{579EF172-AD10-4C66-B7F8-8832B0AA2596}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

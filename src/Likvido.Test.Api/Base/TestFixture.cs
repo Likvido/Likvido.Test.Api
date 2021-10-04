@@ -14,17 +14,17 @@ namespace Likvido.Test.Api
         where TDesignContext : TRuntimeContext
         where TRuntimeContext : DbContext
     {
-        private HttpClientFactory<TStartup>? _clientBuilder { get; set; }
+        private HttpClientFactory<TStartup>? _httpClientFactory;
         protected HttpClientFactory<TStartup> HttpClientFactory
         {
             get
             {
-                if (_clientBuilder == null)
+                if (_httpClientFactory == null)
                 {
                     throw new InvalidOperationException($"Method \"{nameof(TestStarted)}\" should be called first");
                 }
 
-                return _clientBuilder;
+                return _httpClientFactory;
             }
 
         }
@@ -46,19 +46,19 @@ namespace Likvido.Test.Api
 
         protected override void OnTestStarted()
         {
-            var configuration = GetFixtureOptions();
-            _clientBuilder ??= HttpClientFactoryBuilder<TStartup>.Build(new HttpClientFactoryBuilderOptions
+            var fixtureOptions = GetFixtureOptions();
+            _httpClientFactory ??= new HttpClientFactory<TStartup>(new HttpClientFactoryOptions
             {
                 ConfigureServices = s =>
                 {
                     ConfigureMocks(s);
-                    configuration?.ConfigureServices?.Invoke(s);
-                    if (configuration?.DatabaseFixture != null)
+                    fixtureOptions?.ConfigureServices?.Invoke(s);
+                    if (fixtureOptions?.DatabaseFixture != null)
                     {
-                        s.AddScoped(_ => configuration.DatabaseFixture.CreateRuntimeContext());
+                        s.AddScoped(_ => fixtureOptions.DatabaseFixture.CreateRuntimeContext());
                     }
                 },
-                ConfigureNamedHttpClients = configuration?.ConfigureNamedHttpClients
+                ConfigureNamedHttpClients = fixtureOptions?.ConfigureNamedHttpClients
             });
 
             GetFixtureOptions()?.DatabaseFixture?.CreateTestData();
@@ -84,8 +84,8 @@ namespace Likvido.Test.Api
 
         protected void CleanBuilder()
         {
-            _clientBuilder?.Dispose();
-            _clientBuilder = null;
+            _httpClientFactory?.Dispose();
+            _httpClientFactory = null;
         }
 
         private List<(Type ServiceType, Mock Mock)>? _mocks;
