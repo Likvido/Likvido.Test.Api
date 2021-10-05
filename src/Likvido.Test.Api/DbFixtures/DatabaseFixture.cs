@@ -9,7 +9,7 @@ namespace Likvido.Test.Api
     {
         public abstract ContextFixtureBase<TDesignContext, TRuntimeContext> ContextFixture { get; }
 
-        public TRuntimeContext Context => ContextFixture.RuntimeContext;
+        public TDesignContext Context => ContextFixture.DesignContext;
 
         public abstract DatabaseFixtureType DbType { get; }
 

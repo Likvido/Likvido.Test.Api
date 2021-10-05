@@ -14,6 +14,11 @@ namespace Likvido.Test.Api
         where TDesignContext : DbContext
         where TRuntimeContext : DbContext
     {
+        protected TestFixture()
+        {
+            InitMocks();
+        }
+
         private HttpClientFactory<TStartup>? _httpClientFactory;
         protected HttpClientFactory<TStartup> HttpClientFactory
         {
@@ -31,7 +36,7 @@ namespace Likvido.Test.Api
 
         public virtual HttpClient Client => HttpClientFactory.HttpClient;
 
-        public TRuntimeContext Context
+        public TDesignContext Context
         {
             get
             {
@@ -46,6 +51,7 @@ namespace Likvido.Test.Api
 
         protected override void OnTestStarted()
         {
+            ResetMocks();
             var fixtureOptions = GetFixtureOptions();
             _httpClientFactory ??= new HttpClientFactory<TStartup>(new HttpClientFactoryOptions
             {
@@ -67,7 +73,6 @@ namespace Likvido.Test.Api
         protected override void OnTestEnded()
         {
             GetFixtureOptions()?.DatabaseFixture?.Cleanup();
-            ResetMocks();
         }
 
         protected virtual FixtureOptions<TDesignContext, TRuntimeContext>? GetFixtureOptions()
@@ -90,18 +95,24 @@ namespace Likvido.Test.Api
 
         private List<(Type ServiceType, Mock Mock)>? _mocks;
 
-        private void ConfigureMocks(IServiceCollection services)
+        private void InitMocks()
         {
             _mocks = GetType()
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(x => typeof(Mock).IsAssignableFrom(x.PropertyType))
                 .Select(x => (x.PropertyType.GetGenericArguments()[0], (Mock)x.GetValue(this)!))
                 .ToList();
-
-            _mocks.ForEach(x => services.AddSingleton(x.ServiceType, x.Mock.Object));
         }
 
-        private void ResetMocks()
+        private void ConfigureMocks(IServiceCollection services)
+        {
+            _mocks?.ForEach(x => services.AddSingleton(x.ServiceType, x.Mock.Object));
+        }
+
+        /// <summary>
+        /// Called on before starting each test. Resets all mocks to default state. 
+        /// </summary>
+        protected virtual void ResetMocks()
         {
             _mocks?.ForEach(x => x.Mock.Reset());
         }

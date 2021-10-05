@@ -4,6 +4,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Likvido.Test.Api
 {
+    public abstract class ConfigurableTestFixture<TStartup, TContext>
+        : ConfigurableTestFixture<TStartup, TContext, TContext>
+        where TStartup : class
+        where TContext : DbContext
+    {
+    }
+
     public abstract class ConfigurableTestFixture<TStartup, TDesignContext, TRuntimeContext>
         : TestFixture<TStartup, TDesignContext, TRuntimeContext>
         where TStartup : class
