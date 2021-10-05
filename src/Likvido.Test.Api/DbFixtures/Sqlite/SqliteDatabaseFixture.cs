@@ -3,7 +3,7 @@
 namespace Likvido.Test.Api.Sqlite
 {
     public class SqliteDatabaseFixture<TDesignContext, TRuntimeContext> : DatabaseFixture<TDesignContext, TRuntimeContext>
-        where TDesignContext : TRuntimeContext
+        where TDesignContext : DbContext
         where TRuntimeContext : DbContext
     {
         private readonly ContextFixtureBase<TDesignContext, TRuntimeContext> _contextFixture;

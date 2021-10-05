@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Likvido.Test.Api
 {
     public class FixtureOptions<TDesignContext, TRuntimeContext>
-        where TDesignContext : TRuntimeContext
+        where TDesignContext : DbContext
         where TRuntimeContext : DbContext
     {
         public DatabaseFixture<TDesignContext, TRuntimeContext>? DatabaseFixture { get; set; }

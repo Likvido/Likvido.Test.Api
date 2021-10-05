@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Likvido.Test.Api.Sqlite
 {
     public abstract class SqliteContextFixture<TDesignContext, TRuntimeContext> : ContextFixtureBase<TDesignContext, TRuntimeContext>
-        where TDesignContext : TRuntimeContext
+        where TDesignContext : DbContext
         where TRuntimeContext : DbContext
     {
         private readonly SqliteConnection _connection;

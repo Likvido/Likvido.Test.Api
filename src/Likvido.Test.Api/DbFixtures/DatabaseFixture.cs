@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Likvido.Test.Api
 {
     public abstract class DatabaseFixture<TDesignContext, TRuntimeContext> : IDisposable
-        where TDesignContext : TRuntimeContext
+        where TDesignContext : DbContext
         where TRuntimeContext : DbContext
     {
         public abstract ContextFixtureBase<TDesignContext, TRuntimeContext> ContextFixture { get; }

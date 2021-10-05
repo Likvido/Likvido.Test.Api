@@ -11,7 +11,7 @@ namespace Likvido.Test.Api
 {
     public abstract class TestFixture<TStartup, TDesignContext, TRuntimeContext> : TestFixtureBase
         where TStartup : class
-        where TDesignContext : TRuntimeContext
+        where TDesignContext : DbContext
         where TRuntimeContext : DbContext
     {
         private HttpClientFactory<TStartup>? _httpClientFactory;

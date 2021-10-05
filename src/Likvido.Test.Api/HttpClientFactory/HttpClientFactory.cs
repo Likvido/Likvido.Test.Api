@@ -12,7 +12,6 @@ using Microsoft.Extensions.Logging;
 
 namespace Likvido.Test.Api
 {
-
     public class HttpClientFactory<TStartup> : IDisposable
         where TStartup : class
     {
