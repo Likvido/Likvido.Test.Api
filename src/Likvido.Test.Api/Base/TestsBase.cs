@@ -6,7 +6,9 @@ namespace Likvido.Test.Api
         where TFixture : TestFixtureBase
     {
         protected bool IsPersistentFixture { get; set; }
-        private TFixture? _fixture;
+#pragma warning disable CA1051 // Do not declare visible instance fields
+        protected TFixture? _fixture;
+#pragma warning restore CA1051 // Do not declare visible instance fields
 
         public TFixture Fixture
         {

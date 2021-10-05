@@ -41,11 +41,11 @@ namespace Likvido.Test.Api
             get
             {
                 var options = GetFixtureOptions();
-                if (options?.DatabaseFixture?.Context == null)
+                if (options?.DatabaseFixture?.DesignContext == null)
                 {
                     throw new InvalidOperationException("No context was configured for this fixture");
                 }
-                return options.DatabaseFixture.Context;
+                return options.DatabaseFixture.DesignContext;
             }
         }
 
@@ -61,7 +61,14 @@ namespace Likvido.Test.Api
                     fixtureOptions?.ConfigureServices?.Invoke(s);
                     if (fixtureOptions?.DatabaseFixture != null)
                     {
-                        s.AddScoped(_ => fixtureOptions.DatabaseFixture.CreateRuntimeContext());
+                        if (fixtureOptions.ConfigureContext != null)
+                        {
+                            fixtureOptions.ConfigureContext.Invoke(s, fixtureOptions.DatabaseFixture.CreateRuntimeContext);
+                        }
+                        else
+                        {
+                            s.AddScoped(_ => fixtureOptions.DatabaseFixture.CreateRuntimeContext());
+                        }
                     }
                 },
                 ConfigureNamedHttpClients = fixtureOptions?.ConfigureNamedHttpClients

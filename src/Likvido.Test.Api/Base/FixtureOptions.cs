@@ -13,6 +13,9 @@ namespace Likvido.Test.Api
     {
         public DatabaseFixture<TDesignContext, TRuntimeContext>? DatabaseFixture { get; set; }
         public Action<IServiceCollection>? ConfigureServices { get; set; }
-        public Dictionary<string, Action<HttpClient, IConfiguration>> ConfigureNamedHttpClients { get; } = new();
+        public Action<IServiceCollection, Func<TRuntimeContext>>? ConfigureContext { get; set; }
+#pragma warning disable CA2227 // Collection properties should be read only
+        public Dictionary<string, Action<HttpClient, IConfiguration>> ConfigureNamedHttpClients { get; set; } = new();
+#pragma warning restore CA2227 // Collection properties should be read only
     }
 }
