@@ -9,6 +9,10 @@ namespace Likvido.Test.Api
         where TStartup : class
         where TContext : DbContext
     {
+        protected ConfigurableTestFixture(FixtureOptions<TContext> fixtureOptions)
+            : base(fixtureOptions)
+        {
+        }
     }
 
     public abstract class ConfigurableTestFixture<TStartup, TDesignContext, TRuntimeContext>

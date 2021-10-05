@@ -15,7 +15,7 @@ namespace Likvido.Test.Api
 
         public TRuntimeContext CreateRuntimeContext()
         {
-            return ContextFixture.Create().Runtime;
+            return ContextFixture.CreateRuntimeContext();
         }
 
         public void CreateTestData()

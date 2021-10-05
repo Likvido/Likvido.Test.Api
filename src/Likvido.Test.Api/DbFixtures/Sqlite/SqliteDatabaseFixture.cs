@@ -2,6 +2,16 @@
 
 namespace Likvido.Test.Api.Sqlite
 {
+    public class SqliteDatabaseFixture<TContext> : SqliteDatabaseFixture<TContext, TContext>
+        where TContext : DbContext
+    {
+        public SqliteDatabaseFixture(
+            SqliteContextFixture<TContext> contextFixture)
+            : base(contextFixture)
+        {
+        }
+    }
+
     public class SqliteDatabaseFixture<TDesignContext, TRuntimeContext> : DatabaseFixture<TDesignContext, TRuntimeContext>
         where TDesignContext : DbContext
         where TRuntimeContext : DbContext

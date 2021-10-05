@@ -5,6 +5,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Likvido.Test.Api.Sqlite
 {
+    public abstract class SqliteContextFixture<TContext> : SqliteContextFixture<TContext, TContext>
+        where TContext : DbContext
+    {
+    }
+
     public abstract class SqliteContextFixture<TDesignContext, TRuntimeContext> : ContextFixtureBase<TDesignContext, TRuntimeContext>
         where TDesignContext : DbContext
         where TRuntimeContext : DbContext

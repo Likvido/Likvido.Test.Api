@@ -7,6 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Likvido.Test.Api
 {
+    public class FixtureOptions<TContext> : FixtureOptions<TContext, TContext>
+        where TContext : DbContext
+    {
+    }
+
     public class FixtureOptions<TDesignContext, TRuntimeContext>
         where TDesignContext : DbContext
         where TRuntimeContext : DbContext

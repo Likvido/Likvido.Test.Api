@@ -11,25 +11,13 @@ namespace Likvido.Test.Api
         private TRuntimeContext? _runtimeContext;
         private bool _migrated;
 
-        public TRuntimeContext RuntimeContext
-        {
-            get
-            {
-                if (_runtimeContext == null)
-                {
-                    ResetContext();
-                }
-                return _runtimeContext!;
-            }
-        }
-
         public TDesignContext DesignContext
         {
             get
             {
                 if (_designContext == null)
                 {
-                    ResetContext();
+                    ResetDesignContext();
                 }
                 return _designContext!;
             }
@@ -49,12 +37,16 @@ namespace Likvido.Test.Api
             _migrated = true;
         }
 
-        public (TDesignContext Design, TRuntimeContext Runtime) Create()
+        private TDesignContext CreateDesignContext()
         {
             var designContext = GenerateDesignContext();
             Migrate(designContext);
-            var runtimeContext = GenerateRuntimeContext();
-            return (designContext, runtimeContext);
+            return designContext;
+        }
+
+        public TRuntimeContext CreateRuntimeContext()
+        {
+            return GenerateRuntimeContext();
         }
 
         public void CreateTestData()
@@ -65,7 +57,7 @@ namespace Likvido.Test.Api
         public void Cleanup()
         {
             GetTestDataHelper().Cleanup();
-            ResetContext();
+            ResetContexts();
         }
 
         public abstract void ExecuteMigration(TDesignContext context);
@@ -96,11 +88,17 @@ namespace Likvido.Test.Api
             return $"[{value}]";
         }
 
-        private void ResetContext()
+        private void ResetDesignContext()
         {
             _designContext?.Dispose();
+            _designContext = CreateDesignContext();
+        }
+
+        private void ResetContexts()
+        {
+            ResetDesignContext();
             _runtimeContext?.Dispose();
-            (_designContext, _runtimeContext) = Create();
+            _runtimeContext = CreateRuntimeContext();
         }
     }
 }
