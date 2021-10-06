@@ -1,3 +1,6 @@
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/likvido/Likvido.Test.Api/Publish%20to%20nuget)](https://github.com/Likvido/Likvido.Test.Api/actions?query=workflow%3A%22Publish+to+nuget%22)
+[![Nuget](https://img.shields.io/nuget/v/Likvido.Test.Api)](https://www.nuget.org/packages/Likvido.Test.Api/)
+
 # Likvido.Test.Api
 
 Likvido.Test.Api adds support for ASP.NET Core integration tests using a test web host and an in-memory test server.
