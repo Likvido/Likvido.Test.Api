@@ -8,7 +8,6 @@ namespace Likvido.Test.Api
         where TRuntimeContext : DbContext
     {
         private TDesignContext? _designContext;
-        private TRuntimeContext? _runtimeContext;
         private bool _migrated;
 
         public TDesignContext DesignContext
@@ -57,7 +56,7 @@ namespace Likvido.Test.Api
         public void Cleanup()
         {
             GetTestDataHelper().Cleanup();
-            ResetContexts();
+            ResetDesignContext();
         }
 
         public abstract void ExecuteMigration(TDesignContext context);
@@ -76,9 +75,7 @@ namespace Likvido.Test.Api
             }
 
             _designContext?.Dispose();
-            _runtimeContext?.Dispose();
             _designContext = null;
-            _runtimeContext = null;
         }
 
         protected abstract ITestDataHelper GetTestDataHelper();
@@ -92,13 +89,6 @@ namespace Likvido.Test.Api
         {
             _designContext?.Dispose();
             _designContext = CreateDesignContext();
-        }
-
-        private void ResetContexts()
-        {
-            ResetDesignContext();
-            _runtimeContext?.Dispose();
-            _runtimeContext = CreateRuntimeContext();
         }
     }
 }

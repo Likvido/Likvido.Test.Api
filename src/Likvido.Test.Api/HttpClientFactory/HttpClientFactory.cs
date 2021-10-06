@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Likvido.Test.Api
@@ -19,7 +18,6 @@ namespace Likvido.Test.Api
         private readonly WebApplicationFactory<TStartup> _factory;
         private readonly Dictionary<string, HttpClient> _namedHttpClients = new();
 
-        private IConfiguration? _configuration;
         private HttpClient? _httpClient;
 
         public HttpClientFactory(HttpClientFactoryOptions options)
@@ -27,8 +25,6 @@ namespace Likvido.Test.Api
             _options = options;
             _factory = CreateWebAppFactory();
         }
-
-        public IConfiguration Configuration => _configuration ??= _factory.Services.GetRequiredService<IConfiguration>();
 
         public HttpClient HttpClient => _httpClient ??= _factory.CreateClient();
 
@@ -43,7 +39,7 @@ namespace Likvido.Test.Api
                 _options.ConfigureNamedHttpClients.TryGetValue(name, out var httpClientConfig))
             {
                 var httpClient = _factory.CreateClient();
-                httpClientConfig.Invoke(httpClient, Configuration);
+                httpClientConfig.Invoke(_factory.Services, httpClient);
                 _namedHttpClients[name] = httpClient;
                 return httpClient;
             }
