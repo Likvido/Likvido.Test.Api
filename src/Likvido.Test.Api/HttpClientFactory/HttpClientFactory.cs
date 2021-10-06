@@ -35,11 +35,11 @@ namespace Likvido.Test.Api
                 return namedHttpClient;
             }
 
-            if (_options.ConfigureNamedHttpClients != null &&
+            if (_options?.ConfigureNamedHttpClients != null &&
                 _options.ConfigureNamedHttpClients.TryGetValue(name, out var httpClientConfig))
             {
                 var httpClient = _factory.CreateClient();
-                httpClientConfig.Invoke(_factory.Services, httpClient);
+                httpClientConfig?.Invoke(_factory.Services, httpClient);
                 _namedHttpClients[name] = httpClient;
                 return httpClient;
             }
