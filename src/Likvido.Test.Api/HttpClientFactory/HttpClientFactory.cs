@@ -26,7 +26,7 @@ namespace Likvido.Test.Api
             _factory = CreateWebAppFactory();
         }
 
-        public HttpClient HttpClient => _httpClient ??= _factory.CreateClient();
+        public HttpClient HttpClient => _httpClient ??= CreateClient();
 
         public HttpClient GetNamedHttpClient(string name)
         {
@@ -38,7 +38,7 @@ namespace Likvido.Test.Api
             if (_options?.ConfigureNamedHttpClients != null &&
                 _options.ConfigureNamedHttpClients.TryGetValue(name, out var httpClientConfig))
             {
-                var httpClient = _factory.CreateClient();
+                var httpClient = CreateClient();
                 httpClientConfig?.Invoke(_factory.Services, httpClient);
                 _namedHttpClients[name] = httpClient;
                 return httpClient;
@@ -74,6 +74,14 @@ namespace Likvido.Test.Api
                         _options.ConfigureServices?.Invoke(s);
                     });
                 });
+        }
+
+        private HttpClient CreateClient()
+        {
+            return _factory.CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false
+            });
         }
 
         public void Dispose()
