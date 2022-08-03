@@ -20,7 +20,7 @@ namespace Likvido.Test.Api.Sqlite
         {
         }
 
-        protected override void DefaultValue(object defaultValue, string defaultValueSql, string columnType, MigrationCommandListBuilder builder)
+        protected override void DefaultValue(object? defaultValue, string? defaultValueSql, string? columnType, MigrationCommandListBuilder builder)
         {
             if (defaultValueSql != null &&
                 Dependencies.SqlGenerationHelper is SqliteSqlGenerationHelper &&
