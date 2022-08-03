@@ -8,7 +8,7 @@ Likvido.Test.Api adds support for ASP.NET Core integration tests using a test we
 Integration tests ensure that an app's components function correctly at a level that includes the app's supporting infrastructure, such as the database and network. 
 
 ## API app prerequisites
-* `TargetFramework net5.0`
+* `TargetFramework net6.0`
 * `Microsoft.EntityFrameworkCore`
 
 ## How to add integration tets
